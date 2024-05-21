@@ -38,6 +38,9 @@ public class PromoCode {
     @Column(name = "MAX_USAGES")
     private int maxUsages;
 
+    @Column(name = "USAGE_COUNT")
+    private int usageCount;
+
     @ManyToMany
     @JoinTable(
             name = "product_promo_code",

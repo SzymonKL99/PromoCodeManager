@@ -20,4 +20,5 @@ public class PromoCodeDto {
     private BigDecimal discount;
     private String currency;
     private int maxUsages;
+    private int usageCount;
 }

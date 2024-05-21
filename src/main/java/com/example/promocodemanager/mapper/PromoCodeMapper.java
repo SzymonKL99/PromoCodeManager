@@ -15,6 +15,7 @@ public class PromoCodeMapper {
                 .discount(promoCodeDto.getDiscount())
                 .currency(promoCodeDto.getCurrency())
                 .maxUsages(promoCodeDto.getMaxUsages())
+                .usageCount(promoCodeDto.getUsageCount())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class PromoCodeMapper {
                 .discount(promoCode.getDiscount())
                 .currency(promoCode.getCurrency())
                 .maxUsages(promoCode.getMaxUsages())
+                .usageCount(promoCode.getUsageCount())
                 .build();
     }
 }
