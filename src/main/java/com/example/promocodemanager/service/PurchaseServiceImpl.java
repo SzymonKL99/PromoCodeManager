@@ -8,8 +8,10 @@ import com.example.promocodemanager.exceptions.PromoCodeNotFoundException;
 import com.example.promocodemanager.mapper.PurchaseMapper;
 import com.example.promocodemanager.model.Product;
 import com.example.promocodemanager.model.PromoCode;
+import com.example.promocodemanager.model.Purchase;
 import com.example.promocodemanager.repository.ProductRepository;
 import com.example.promocodemanager.repository.PromoCodeRepository;
+import com.example.promocodemanager.repository.PurchaseRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +32,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final PromoCodeRepository promoCodeRepository;
     private final ProductRepository productRepository;
+    private final PurchaseRepository purchaseRepository;
+    private final PurchaseMapper purchaseMapper;
 
 
     private static final Logger logger = LogManager.getLogger(PurchaseServiceImpl.class);
@@ -74,6 +78,29 @@ public class PurchaseServiceImpl implements PurchaseService {
         return discountedPrice;
     }
 
+    public PurchaseDto simulatePurchase(Long productId, Long promoCodeId) throws PromoCodeNotFoundException, ProductNotFoundExceptions {
+        BigDecimal discountedPrice = calculateDiscountedPrice(productId, promoCodeId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundExceptions("Product with ID " + productId + " not found"));
+
+        PromoCode promoCode = promoCodeRepository.findById(promoCodeId)
+                .orElseThrow(() -> new PromoCodeNotFoundException("PromoCode with ID " + promoCodeId + " not found"));
+
+        Purchase purchase = Purchase.builder()
+                .date(LocalDate.now())
+                .regularPrice(product.getRegularPrice())
+                .discountedPrice(discountedPrice)
+                .currency(product.getCurrency())
+                .product(product)
+                .promoCode(promoCode)
+                .build();
+
+        Purchase savedPurchase = purchaseRepository.save(purchase);
+        promoCode.setUsageCount(promoCode.getUsageCount() + 1);
+        promoCodeRepository.save(promoCode);
+        return purchaseMapper.mapToPurchaseDto(savedPurchase);
+    }
+
     private BigDecimal getProductRegularPrice(Long productId) throws ProductNotFoundExceptions {
         return getProductById(productId).getRegularPrice();
     }
@@ -81,5 +108,6 @@ public class PurchaseServiceImpl implements PurchaseService {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundExceptions("Product with ID " + productId + " not found"));
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.promocodemanager.service;
 
 import com.example.promocodemanager.dto.PromoCodeDto;
+import com.example.promocodemanager.exceptions.InvalidPromoCodeException;
 import com.example.promocodemanager.exceptions.PromoCodeNotFoundException;
 import com.example.promocodemanager.mapper.PromoCodeMapper;
 import com.example.promocodemanager.model.PromoCode;
@@ -28,6 +29,7 @@ public class PromoCodeServiceImpl implements PromoCodeService {
 
     @Override
     public PromoCodeDto createPromoCode(PromoCodeDto promoCodeDto) {
+        validatePromoCode(promoCodeDto.getCode());
         PromoCode promoCode = promoCodeMapper.mapToPromoCode(promoCodeDto);
         PromoCode savedPromoCode = promoCodeRepository.save(promoCode);
         return promoCodeMapper.mapToPromoCodeDto(savedPromoCode);
@@ -38,6 +40,12 @@ public class PromoCodeServiceImpl implements PromoCodeService {
         return promoCodeRepository.findAll().stream()
                 .map(promoCodeMapper::mapToPromoCodeDto)
                 .collect(Collectors.toList());
+    }
+
+    private void validatePromoCode(String code) throws InvalidPromoCodeException {
+        if (code == null || code.length() < 3 || code.length() > 24 || !code.matches("[a-zA-Z0-9]+")) {
+            throw new InvalidPromoCodeException("Invalid promo code format");
+        }
     }
 
 
