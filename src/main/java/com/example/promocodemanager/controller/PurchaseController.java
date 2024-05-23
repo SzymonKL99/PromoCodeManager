@@ -1,6 +1,7 @@
 package com.example.promocodemanager.controller;
 
 import com.example.promocodemanager.dto.PurchaseDto;
+import com.example.promocodemanager.dto.SalesReportDto;
 import com.example.promocodemanager.exceptions.ProductNotFoundExceptions;
 import com.example.promocodemanager.exceptions.PromoCodeNotFoundException;
 import com.example.promocodemanager.service.PurchaseServiceImpl;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,5 +36,11 @@ public class PurchaseController {
 
             PurchaseDto purchaseDto = purchaseService.simulatePurchase(productId, promoCodeId);
             return ResponseEntity.ok(purchaseDto);
+    }
+
+    @GetMapping(value = "/salesReport")
+    public ResponseEntity<Map<String, SalesReportDto>> getSalesReport() {
+        Map<String, SalesReportDto> report = purchaseService.generateSalesReport();
+        return ResponseEntity.ok(report);
     }
 }
