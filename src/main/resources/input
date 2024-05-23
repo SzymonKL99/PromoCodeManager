@@ -1,0 +1,36 @@
+
+
+INSERT INTO PRODUCT (REGULAR_PRICE, CURRENCY, DESCRIPTION, PRODUCT_NAME) VALUES
+(999.99, 'USD', 'Apple', 'Laptop'),
+(150.00, 'EUR', 'Sony', 'Headphones'),
+(499.00, 'GBP', 'Dell', 'Monitor'),
+(299.99, 'USD', 'LG', 'Tablet'),
+(75.00, 'EUR', 'Logitech', 'Mouse'),
+(50.00, 'GBP', 'HP', 'Keyboard'),
+(1200.00, 'USD', 'Canon', 'Camera'),
+(350.00, 'EUR', 'Nikon', 'Lens'),
+(600.00, 'USD', 'Microsoft', 'Surface Pro'),
+(400.00, 'GBP', 'Asus', 'Router'),
+(100.00, 'EUR', 'JBL', 'Speaker'),
+(800.00, 'USD', 'Acer', 'Projector'),
+(55.00, 'EUR', 'Samsung', 'USB Drive'),
+(650.00, 'USD', 'Apple', 'Watch');
+
+
+INSERT INTO PROMO_CODE (DISCOUNT, EXPIRATION_DATE, MAX_USAGES, USAGE_COUNT, CODE, CURRENCY) VALUES
+(20.00, '2024-11-15', 5, 0, 'SAVE20', 'USD'),
+(15.00, '2024-10-10', 20, 0, 'WELCOME15', 'GBP'),
+(10.00, '2025-01-01', 50, 0, 'DISCOUNT10', 'EUR'),
+(25.00, '2024-09-30', 30, 0, 'SUMMER25', 'USD'),
+(30.00, '2024-08-31', 15, 0, 'AUTUMN30', 'GBP'),
+(40.00, '2024-07-15', 10, 0, 'FLASH40', 'EUR'),
+(35.00, '2024-06-30', 25, 0, 'HOLIDAY35', 'USD'),
+(45.00, '2024-05-31', 8, 0, 'SPECIAL45', 'GBP'),
+(60.00, '2024-04-30', 5, 0, 'SPRING60', 'EUR'),
+(55.00, '2024-03-31', 12, 0, 'VIP55', 'USD'),
+(70.00, '2024-02-29', 7, 0, 'EXTRA70', 'GBP'),
+(65.00, '2024-01-31', 10, 0, 'WINTER65', 'EUR'),
+(80.00, '2025-12-31', 3, 0, 'MEGA80', 'USD'),
+(90.00, '2024-11-30', 2, 0, 'ULTIMATE90', 'GBP');
+
+
