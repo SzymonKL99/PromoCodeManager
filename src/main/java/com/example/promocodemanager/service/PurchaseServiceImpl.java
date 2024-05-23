@@ -3,6 +3,7 @@ package com.example.promocodemanager.service;
 import com.example.promocodemanager.dto.ProductDto;
 import com.example.promocodemanager.dto.PromoCodeDto;
 import com.example.promocodemanager.dto.PurchaseDto;
+import com.example.promocodemanager.dto.SalesReportDto;
 import com.example.promocodemanager.exceptions.ProductNotFoundExceptions;
 import com.example.promocodemanager.exceptions.PromoCodeNotFoundException;
 import com.example.promocodemanager.mapper.PurchaseMapper;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.apache.logging.log4j.Logger;
 
@@ -109,5 +113,21 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .orElseThrow(() -> new ProductNotFoundExceptions("Product with ID " + productId + " not found"));
     }
 
+    public Map<String, SalesReportDto> generateSalesReport() {
+        List<Purchase> purchases = purchaseRepository.findAll();
+        Map<String, SalesReportDto> report = new HashMap<>();
 
+        for (Purchase purchase : purchases) {
+            String currency = purchase.getCurrency();
+            SalesReportDto salesReportDto = report.getOrDefault(currency, new SalesReportDto(currency, BigDecimal.ZERO,
+                    BigDecimal.ZERO, 0));
+            salesReportDto.setTotalAmount(salesReportDto.getTotalAmount().add(purchase.getRegularPrice()));
+            salesReportDto.setTotalDiscount(salesReportDto.getTotalDiscount().add(purchase.getRegularPrice().subtract
+                    (purchase.getDiscountedPrice())));
+            salesReportDto.setNoOfPurchases(salesReportDto.getNoOfPurchases() + 1);
+
+            report.put(currency, salesReportDto);
+        }
+        return report;
+    }
 }
