@@ -38,7 +38,7 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private Set<PromoCode> promoCodes;
 
-    @OneToOne(mappedBy = "product")
-    private Purchase purchase;
+    @OneToMany(mappedBy = "product")
+    private Set<Purchase> purchase;
 
 }

@@ -33,7 +33,7 @@ public class Purchase {
     @Column(name = "CURRENCY")
     private String currency;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 

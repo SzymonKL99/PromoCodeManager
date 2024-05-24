@@ -42,7 +42,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private static final Logger logger = LogManager.getLogger(PurchaseServiceImpl.class);
 
-
+    @Override
     public BigDecimal calculateDiscountedPrice(Long productId, Long promoCodeId) throws PromoCodeNotFoundException {
         Optional<PromoCode> promoCodeOpt = promoCodeRepository.findById(promoCodeId);
         if (promoCodeOpt.isEmpty()) {
@@ -81,7 +81,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         return discountedPrice;
     }
-
+    @Override
     public PurchaseDto simulatePurchase(Long productId, Long promoCodeId) throws PromoCodeNotFoundException, ProductNotFoundExceptions {
         BigDecimal discountedPrice = calculateDiscountedPrice(productId, promoCodeId);
         Product product = productRepository.findById(productId)
@@ -113,6 +113,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 .orElseThrow(() -> new ProductNotFoundExceptions("Product with ID " + productId + " not found"));
     }
 
+    @Override
     public Map<String, SalesReportDto> generateSalesReport() {
         List<Purchase> purchases = purchaseRepository.findAll();
         Map<String, SalesReportDto> report = new HashMap<>();
